@@ -1,1 +1,1 @@
-This is test project with hero admin panel!
+Small project simular to-do list. Use redux, as state storage
