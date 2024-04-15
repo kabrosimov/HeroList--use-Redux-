@@ -7,64 +7,59 @@
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
 import { useDispatch, useSelector } from 'react-redux';
-import { filterInit } from "../../actions";
+import { activeFilterChanged } from './filtersSlice';
 import classNames from 'classnames';
-import Spinner from '../spinner/Spinner';
 import './heroesFilter.css'
 const HeroesFilters = () => {
-    const {activeFilters, filters, filtersLoadingStatus} = useSelector(state => state);
+    const {activeFilters, filters, filtersLoadingStatus} = useSelector(state => state.filtersSlice);
 
 
     const dispatch = useDispatch(); 
 
     const handleClick = (key) => {
         if (key === 'all') {
-            dispatch(filterInit([]))
+            dispatch(activeFilterChanged([]))
         } else {
             if (activeFilters.indexOf(key) > -1) {
-                dispatch(filterInit(activeFilters.filter(item => item !==  key)))
+                dispatch(activeFilterChanged(activeFilters.filter(item => item !==  key)))
             } else {
-                dispatch(filterInit([...activeFilters, key]))
+                dispatch(activeFilterChanged([...activeFilters, key]))
             }
         }
     }
 
-    const createButtons = (arr) => {
-        const buttonsList = arr.map((item, i) => {
-            
-            let buttonElement;            
-            for (let key in item) {
-                const elementClass = classNames({
-                        btn: true,
-                        'btn-outline-dark': key === 'all',
-                        'btn-danger': key === 'fire',
-                        'btn-primary': key === 'water',
-                        'btn-success': key === 'wind',
-                        'btn-secondary': key === 'earth',
-                        'active': (key === 'all' && activeFilters.length === 0) || 
-                                  (activeFilters.indexOf(key) > -1) 
-                    });
-               
-                buttonElement = <button 
-                    className={elementClass} 
-                    key={i}
-                    onClick={() => handleClick(key)}>
-                        {item[key]}
-                    </button>  
-                                
-            }
-            return buttonElement  
-            
-            
+    const renderButtons = (filters) => {
+
+        if (filtersLoadingStatus === "loading") {
+            return <button>Идет загрузка...</button>;
+        } else if (filtersLoadingStatus === "error") {
+            return <button>Ошибка загрузки</button>;
+        }
+
+        const buttonsList = filters.map(({key, name}) => {   
+            const elementClass = classNames({
+                    btn: true,
+                    'btn-outline-dark': key === 'all',
+                    'btn-danger': key === 'fire',
+                    'btn-primary': key === 'water',
+                    'btn-success': key === 'wind',
+                    'btn-secondary': key === 'earth',
+                    'active': (key === 'all' && activeFilters.length === 0) || 
+                                (activeFilters.indexOf(key) > -1) 
+                });
+            return (
+                <button 
+                className={elementClass} 
+                key={key}
+                onClick={() => handleClick(key)}>
+                    {name}
+                </button> 
+                )   
             });
         return buttonsList;
     }
-    const buttons = createButtons(filters);
-    if (filtersLoadingStatus === "loading") {
-        return <Spinner/>;
-    } else if (filtersLoadingStatus === "error") {
-        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
-    }
+    const buttons = renderButtons(filters)
+   
 
     return (
         <div className="card shadow-lg mt-4">

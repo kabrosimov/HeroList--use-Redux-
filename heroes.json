@@ -19,33 +19,48 @@
       "element": "water"
     },
     {
-      "id": "b281ccde-f1c8-4398-9fab-91d3dcbfb8b5",
-      "name": "Константин",
-      "description": "работать сразу в фільтре, буду вродой",
-      "element": "water"
+      "id": "f2bb10f9-e64e-4670-bc34-8fa010b992a8",
+      "name": "xcvbnm,",
+      "description": "xcvbnm,",
+      "element": "fire"
     },
     {
-      "id": "5e2842fa-de5a-496b-9744-89b9db2be884",
-      "name": "вітял",
-      "description": "а я буду землей і сразу меня відно не будет",
+      "id": "3ff52ca7-8a6c-4b98-bdb3-ffa7624a1d8c",
+      "name": "ss",
+      "description": "sssd",
       "element": "earth"
     }
   ],
   "filters": [
     {
-      "all": "Все"
+      "key": "all",
+      "name": "Все",
+      "all": "Все",
+      "id": "1e57"
     },
     {
-      "fire": "Огонь"
+      "key": "fire",
+      "name": "Огонь",
+      "fire": "Огонь",
+      "id": "728a"
     },
     {
-      "water": "Вода"
+      "key": "water",
+      "name": "Вода",
+      "water": "Вода",
+      "id": "d70a"
     },
     {
-      "wind": "Воздух"
+      "key": "wind",
+      "name": "Воздух",
+      "wind": "Воздух",
+      "id": "8c3d"
     },
     {
-      "earth": "Земля"
+      "key": "earth",
+      "name": "Земля",
+      "earth": "Земля",
+      "id": "21f6"
     }
   ]
 }
