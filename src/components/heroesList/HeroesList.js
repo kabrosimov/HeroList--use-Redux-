@@ -1,14 +1,13 @@
-import {useHttp} from '../../hooks/http.hook';
-import { useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-// import { fetchHeroes } from '../../actions';
-import { deleteHero, fetchHeroes, filteredHeroSelector } from './heroesSlice';
+
+import { useCallback, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 import {
     CSSTransition,
     TransitionGroup,
   } from 'react-transition-group';
+import { useGetHeroesQuery, useDeleteHeroMutation } from '../../api/apiSlice'; //hook RTK query
 import './heroesList.css';
 
 // Задача для этого компонента:
@@ -18,40 +17,41 @@ import './heroesList.css';
 
 const HeroesList = () => {
 
+    
+    const {
+        data: heroes = [],
+        isFetching,
+        isLoading,
+        isError
+    } = useGetHeroesQuery(); 
+    const [deleteHeroRTK] = useDeleteHeroMutation();
 
-    const heroesLoadingStatus = useSelector(state => state.heroesSlice.heroesLoadingStatus);
-    const filteredHeroes = useSelector(filteredHeroSelector)
-    const dispatch = useDispatch();
-    const {request} = useHttp();
+    const activeFilter = useSelector(state => state.filtersSlice.activeFilters);
 
-    useEffect(() => {
-        dispatch(fetchHeroes())
-        // // dispatch(heroesFetching());
-        // // dispatch('HEROES_FETCHING');
-        // dispatch(heroesFetching);
-        // request("http://localhost:3001/heroes")
-        //     .then(data => dispatch(heroesFetched(data)))
-        //     .catch(() => dispatch(heroesFetchingError()))
-    }, []);
+    const filteredHeroes = useMemo(() => {
+        const filtHeroes = heroes.slice();
+        if (activeFilter.length === 0)
+            return filtHeroes;
+        else return filtHeroes.filter(item => activeFilter.includes(item.element))
+    }, [heroes, activeFilter]);
+
 
     const onDelete = useCallback((id) => {
-        request(`http://localhost:3001/heroes/${id}`, 'DELETE')            
-            .then(dispatch(deleteHero(id)))
-            .then(console.log('Hero was deleted'))
-            .catch((e) => console.log(e))
-    }, [request]); 
+        deleteHeroRTK(id);
+    }, []); 
 
-  
-    if (heroesLoadingStatus === "loading") {
+
+    if (isLoading || isFetching) {
         return <Spinner/>;
-    } else if (heroesLoadingStatus === "error") {
+    // } else if (heroesLoadingStatus === "error") {
+    } else if (isError) {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
 
     const renderHeroesList = (heroes) => { 
         if (heroes.length === 0) {
             return (
-                //без обертки зависет надпись
+                //без обертки зависнет надпись
                 <CSSTransition
                     timeout={0}
                     classNames="hero">
@@ -70,6 +70,7 @@ const HeroesList = () => {
                
         })
     }
+    // const elements = renderHeroesList(filteredHeroes);
     const elements = renderHeroesList(filteredHeroes);
     return (
         

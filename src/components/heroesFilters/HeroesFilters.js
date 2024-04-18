@@ -10,11 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activeFilterChanged, selectAll } from './filtersSlice';
 import classNames from 'classnames';
 import './heroesFilter.css'
-// import store from '../../store';
 const HeroesFilters = () => {
     const {activeFilters, filtersLoadingStatus} = useSelector(state => state.filtersSlice);
     const listAllFilter = useSelector(selectAll);
-    // const listAllFilter = selectAll(store.getState());
 
 
     const dispatch = useDispatch(); 
@@ -62,7 +60,6 @@ const HeroesFilters = () => {
         return buttonsList;
     }
     const buttons = renderButtons(listAllFilter)
-    // console.log(listAllFilter)
    
 
     return (

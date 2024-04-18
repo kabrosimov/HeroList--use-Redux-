@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from "react-redux";
 // import { fetchFilter } from "../../actions";
 import { fetchFilter, selectAll } from "../heroesFilters/filtersSlice";
-import { addHero } from "../heroesList/heroesSlice";
 import { useSelector } from "react-redux";
 import { useHttp } from '../../hooks/http.hook';
+import { useCreateHeroMutation } from "../../api/apiSlice";
 // import store from "../../store";
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -19,6 +19,7 @@ import { useHttp } from '../../hooks/http.hook';
 // данных из фильтров
 
 const HeroesAddForm = () => {
+
     const initialState = {
         name: '',
         description: '',
@@ -28,8 +29,7 @@ const HeroesAddForm = () => {
     const dispatch = useDispatch();
     const { filtersLoadingStatus} = useSelector(state => state.filtersSlice);
     const listAllFilter = useSelector(selectAll);
-    // const listAllFilter = selectAll(store.getState())
-    const {request} = useHttp();
+    const [createHeroRTK] = useCreateHeroMutation();
 
     useEffect( () => {
         dispatch(fetchFilter());
@@ -47,11 +47,7 @@ const HeroesAddForm = () => {
     const handleSubmitForm = (e) => {
         e.preventDefault();
         const submitObj = {id: uuidv4(), ...formData }
-        request(`http://localhost:3001/heroes/`, 'POST', JSON.stringify(submitObj)) 
-            .then(data => console.log(`Hero ${data.name} was added`))
-            .then(() => dispatch(addHero(submitObj)))
-            .catch((e) => console.log('Adding hero. Some error', e)); 
-        //clear form
+        createHeroRTK(submitObj).unwrap();
         setformData(initialState)              
     }
       
