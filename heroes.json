@@ -19,48 +19,43 @@
       "element": "water"
     },
     {
-      "id": "f2bb10f9-e64e-4670-bc34-8fa010b992a8",
-      "name": "xcvbnm,",
-      "description": "xcvbnm,",
-      "element": "fire"
+      "id": "36f509fe-e6a4-4758-88f6-f5e8e04b8cd5",
+      "name": "sdfsd",
+      "description": "sdfsd",
+      "element": "wind"
     },
     {
-      "id": "3ff52ca7-8a6c-4b98-bdb3-ffa7624a1d8c",
-      "name": "ss",
-      "description": "sssd",
-      "element": "earth"
+      "id": "8b7862bd-4efd-40d1-a230-d40d7b13f1c6",
+      "name": "апрол",
+      "description": "вапав",
+      "element": "fire"
     }
   ],
   "filters": [
     {
       "key": "all",
       "name": "Все",
-      "all": "Все",
-      "id": "1e57"
+      "all": "Все"
     },
     {
       "key": "fire",
       "name": "Огонь",
-      "fire": "Огонь",
-      "id": "728a"
+      "fire": "Огонь"
     },
     {
       "key": "water",
       "name": "Вода",
-      "water": "Вода",
-      "id": "d70a"
+      "water": "Вода"
     },
     {
       "key": "wind",
       "name": "Воздух",
-      "wind": "Воздух",
-      "id": "8c3d"
+      "wind": "Воздух"
     },
     {
       "key": "earth",
       "name": "Земля",
-      "earth": "Земля",
-      "id": "21f6"
+      "earth": "Земля"
     }
   ]
 }

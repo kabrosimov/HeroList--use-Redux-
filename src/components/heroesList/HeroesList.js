@@ -1,16 +1,15 @@
 import {useHttp} from '../../hooks/http.hook';
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchHeroes } from '../../actions';
-import { deleteHero } from './heroesSlice';
+// import { fetchHeroes } from '../../actions';
+import { deleteHero, fetchHeroes, filteredHeroSelector } from './heroesSlice';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 import {
     CSSTransition,
     TransitionGroup,
   } from 'react-transition-group';
-import { createSelector } from 'reselect';
-import './heroesList.css'
+import './heroesList.css';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
@@ -19,25 +18,14 @@ import './heroesList.css'
 
 const HeroesList = () => {
 
-    //createSelector используется , когда нужно мемоизировать результат выаолнения 
-    //какого-то дейсттвия, которое меняет стейт. при одинаковых вызовах нет смысла перерисовывать стейт
-    //и потом из-за этого перерисовывать компонент
-    const filteredHeroSelector = createSelector(
-        (state) => state.filtersSlice.activeFilters,
-        (state) => state.heroesSlice.heroes,
-        (filters, heroes) => {
-            if (filters.length === 0)
-                return heroes;
-            else return heroes.filter(item => filters.includes(item.element))
-        }        
-    )
+
     const heroesLoadingStatus = useSelector(state => state.heroesSlice.heroesLoadingStatus);
     const filteredHeroes = useSelector(filteredHeroSelector)
     const dispatch = useDispatch();
     const {request} = useHttp();
 
     useEffect(() => {
-        dispatch(fetchHeroes(request))
+        dispatch(fetchHeroes())
         // // dispatch(heroesFetching());
         // // dispatch('HEROES_FETCHING');
         // dispatch(heroesFetching);
